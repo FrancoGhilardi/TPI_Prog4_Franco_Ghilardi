@@ -5,14 +5,14 @@ Trabajo Práctico Integrador · Programación 4 · Tecnicatura Universitaria en 
 Aplicación web para un negocio de comidas: los clientes se registran, recorren el catálogo, arman un carrito y confirman pedidos (efectivo o transferencia); el administrador gestiona categorías, productos, stock, pedidos y usuarios.
 
 - **Repositorio:** https://github.com/FrancoGhilardi/TPI_Prog4_Franco_Ghilardi
-- **Video de demostración:** COMPLETAR_LINK_PUBLICO_DEL_VIDEO
-- **Integrantes:** Franco Ghilardi
+- **Video de demostración:** https://drive.google.com/file/d/1rUb3QHGir9wS85VShThCgnpAe56cNI_q/view?usp=sharing
+- **Alumno:** Franco Ghilardi
 
 ## Stack
 
-| Parte | Tecnologías |
-|---|---|
-| Backend | Python 3.11–3.13, FastAPI, SQLModel, PostgreSQL (o SQLite en desarrollo), JWT en cookie HttpOnly, passlib + bcrypt |
+| Parte    | Tecnologías                                                                                                          |
+| -------- | -------------------------------------------------------------------------------------------------------------------- |
+| Backend  | Python 3.11–3.13, FastAPI, SQLModel, PostgreSQL (o SQLite en desarrollo), JWT en cookie HttpOnly, passlib + bcrypt   |
 | Frontend | React 19, TypeScript (strict), Vite 7, Tailwind CSS 4, TanStack Query / Form / Table, React Router 7, Zustand, Axios |
 
 ## Requisitos
@@ -57,13 +57,13 @@ copy .env.example .env
 cp .env.example .env
 ```
 
-| Variable | Descripción | Ejemplo |
-|---|---|---|
-| `DATABASE_URL` | Conexión a la base | `postgresql://postgres:postgres@localhost:5432/foodstore_db` |
-| `SECRET_KEY` | Firma del JWT (mínimo 32 caracteres) | `cambiar-esta-clave-de-al-menos-32-caracteres` |
-| `ALGORITHM` | Algoritmo del JWT | `HS256` |
-| `ACCESS_TOKEN_EXPIRE_MINUTES` | Expiración del token y de la cookie | `30` |
-| `FRONTEND_ORIGIN` | Origen permitido por CORS | `http://localhost:5173` |
+| Variable                      | Descripción                          | Ejemplo                                                      |
+| ----------------------------- | ------------------------------------ | ------------------------------------------------------------ |
+| `DATABASE_URL`                | Conexión a la base                   | `postgresql://postgres:postgres@localhost:5432/foodstore_db` |
+| `SECRET_KEY`                  | Firma del JWT (mínimo 32 caracteres) | `cambiar-esta-clave-de-al-menos-32-caracteres`               |
+| `ALGORITHM`                   | Algoritmo del JWT                    | `HS256`                                                      |
+| `ACCESS_TOKEN_EXPIRE_MINUTES` | Expiración del token y de la cookie  | `30`                                                         |
+| `FRONTEND_ORIGIN`             | Origen permitido por CORS            | `http://localhost:5173`                                      |
 
 **Base de datos PostgreSQL** (elegir una opción):
 
@@ -93,10 +93,10 @@ python -m app.db.seed
 
 Crea las tablas y carga (idempotente, se puede correr varias veces):
 
-| Usuario | Contraseña | Rol |
-|---|---|---|
-| `admin` | `Admin1234!` | admin |
-| `cliente` | `Cliente1234!` | user |
+| Usuario   | Contraseña     | Rol   |
+| --------- | -------------- | ----- |
+| `admin`   | `Admin1234!`   | admin |
+| `cliente` | `Cliente1234!` | user  |
 
 Además, 5 categorías y 10 productos con stock.
 
@@ -135,8 +135,8 @@ copy .env.example .env
 cp .env.example .env
 ```
 
-| Variable | Descripción | Ejemplo |
-|---|---|---|
+| Variable       | Descripción        | Ejemplo                        |
+| -------------- | ------------------ | ------------------------------ |
 | `VITE_API_URL` | URL base de la API | `http://localhost:8000/api/v1` |
 
 ### 3. Ejecución
@@ -156,11 +156,11 @@ Alternativa a los pasos anteriores: levanta PostgreSQL, el backend (ejecuta el s
 docker compose up --build -d
 ```
 
-| Servicio | URL |
-|---|---|
-| Frontend | http://localhost:5173 |
-| API / Swagger | http://localhost:8000/docs |
-| PostgreSQL | `localhost:5432` o `DB_HOST_PORT` (`postgres` / `postgres`, base `foodstore_db`) |
+| Servicio      | URL                                                                              |
+| ------------- | -------------------------------------------------------------------------------- |
+| Frontend      | http://localhost:5173                                                            |
+| API / Swagger | http://localhost:8000/docs                                                       |
+| PostgreSQL    | `localhost:5432` o `DB_HOST_PORT` (`postgres` / `postgres`, base `foodstore_db`) |
 
 Detener: `docker compose down` · Borrar también los datos: `docker compose down -v`.
 No se puede correr a la vez que `uvicorn` / `pnpm dev` nativos (usan los mismos puertos).
@@ -173,30 +173,30 @@ No se puede correr a la vez que `uvicorn` / `pnpm dev` nativos (usan los mismos 
 
 ### Reglas de negocio
 
-| Regla | Descripción |
-|---|---|
+| Regla | Descripción                                                                                                                                                                                     |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | RN-01 | El pedido se crea en una transacción: valida productos (activos, disponibles, con stock, sin repetir), descuenta stock y copia nombre y precio en cada línea. Si algo falla, no se guarda nada. |
-| RN-02 | Estados: `PENDIENTE → EN_PREPARACION → ENTREGADO`; `PENDIENTE` y `EN_PREPARACION` pueden pasar a `CANCELADO`. `ENTREGADO` y `CANCELADO` son terminales. |
-| RN-03 | Cancelar restituye el stock en la misma transacción. |
-| RN-04 | El cliente ve y cancela solo sus pedidos (solo en PENDIENTE); el admin ve todos y los avanza o cancela. |
-| RN-05 | Las líneas y el total de un pedido no cambian después de crearlo. |
-| RN-06 | `forma_pago`: EFECTIVO o TRANSFERENCIA; `direccion_entrega`: 5 a 200 caracteres. |
+| RN-02 | Estados: `PENDIENTE → EN_PREPARACION → ENTREGADO`; `PENDIENTE` y `EN_PREPARACION` pueden pasar a `CANCELADO`. `ENTREGADO` y `CANCELADO` son terminales.                                         |
+| RN-03 | Cancelar restituye el stock en la misma transacción.                                                                                                                                            |
+| RN-04 | El cliente ve y cancela solo sus pedidos (solo en PENDIENTE); el admin ve todos y los avanza o cancela.                                                                                         |
+| RN-05 | Las líneas y el total de un pedido no cambian después de crearlo.                                                                                                                               |
+| RN-06 | `forma_pago`: EFECTIVO o TRANSFERENCIA; `direccion_entrega`: 5 a 200 caracteres.                                                                                                                |
 
 ## Endpoints principales (`/api/v1`)
 
-| Método | Ruta | Acceso |
-|---|---|---|
-| POST | `/auth/register`, `/auth/token`, `/auth/logout` | Público |
-| GET | `/auth/me` | Sesión |
-| GET / POST | `/admin/usuarios`, `/admin/usuarios/{id}/activar`, `/admin/usuarios/{id}/desactivar` | admin |
-| GET | `/categorias`, `/categorias/{id}` | Público |
-| POST / PUT / DELETE | `/categorias`, `/categorias/{id}` | admin |
-| GET | `/productos?skip&limit&search&categoria_id&disponible`, `/productos/{id}` | Público |
-| POST / PUT / PATCH / DELETE | `/productos`, `/productos/{id}`, `/productos/{id}/stock` | admin |
-| POST / GET | `/pedidos` | Sesión |
-| GET | `/pedidos/resumen` | admin |
-| GET | `/pedidos/{id}` | Dueño o admin |
-| PATCH | `/pedidos/{id}/estado` | admin |
-| PATCH | `/pedidos/{id}/cancelar` | Dueño |
+| Método                      | Ruta                                                                                 | Acceso        |
+| --------------------------- | ------------------------------------------------------------------------------------ | ------------- |
+| POST                        | `/auth/register`, `/auth/token`, `/auth/logout`                                      | Público       |
+| GET                         | `/auth/me`                                                                           | Sesión        |
+| GET / POST                  | `/admin/usuarios`, `/admin/usuarios/{id}/activar`, `/admin/usuarios/{id}/desactivar` | admin         |
+| GET                         | `/categorias`, `/categorias/{id}`                                                    | Público       |
+| POST / PUT / DELETE         | `/categorias`, `/categorias/{id}`                                                    | admin         |
+| GET                         | `/productos?skip&limit&search&categoria_id&disponible`, `/productos/{id}`            | Público       |
+| POST / PUT / PATCH / DELETE | `/productos`, `/productos/{id}`, `/productos/{id}/stock`                             | admin         |
+| POST / GET                  | `/pedidos`                                                                           | Sesión        |
+| GET                         | `/pedidos/resumen`                                                                   | admin         |
+| GET                         | `/pedidos/{id}`                                                                      | Dueño o admin |
+| PATCH                       | `/pedidos/{id}/estado`                                                               | admin         |
+| PATCH                       | `/pedidos/{id}/cancelar`                                                             | Dueño         |
 
 Detalle completo, schemas y códigos de error en `/docs`.

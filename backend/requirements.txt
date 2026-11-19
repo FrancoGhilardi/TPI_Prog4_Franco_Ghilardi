@@ -1,0 +1,14 @@
+fastapi[standard]==0.115.12
+sqlmodel==0.0.22
+psycopg2-binary==2.9.10
+python-jose[cryptography]==3.5.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
+pydantic-settings==2.6.1
+python-multipart==0.0.20
+
+# Dependencias transitivas fijadas (compatibilidad con sqlmodel 0.0.22)
+pydantic==2.14.3
+pydantic-core==2.50.4
+SQLAlchemy==2.0.57
+starlette==0.46.2
